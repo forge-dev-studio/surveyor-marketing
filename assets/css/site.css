@@ -1,0 +1,1190 @@
+/* Georgia SEO Company: base stylesheet. Mobile-first, no framework. */
+
+@font-face {
+  font-family: 'DM Sans';
+  src: url('/assets/fonts/dmsans-400.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'DM Sans';
+  src: url('/assets/fonts/dmsans-700.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Inter';
+  src: url('/assets/fonts/inter-400.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Inter';
+  src: url('/assets/fonts/inter-600.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+/* Display face for the pop-art comic brand (2026-08-12): headings, CTAs, action accents.
+   Body copy stays on Inter -- 183 pages of dense prose keep a reading face; the comic
+   personality lives in display type, frames, and color. */
+@font-face {
+  font-family: 'Bangers';
+  src: url('/assets/fonts/bangers-400.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* Pop-art comic palette (Eric, 2026-08-12): red primary, black frames, yellow action
+     accents, cream paper wash. Anchored on the burst-wordmark logo. */
+  --primary: #E4002B;
+  --accent: #FFD100;
+  --ink: #0B0B0B;
+  --bg: #ffffff;
+  --wash: #FFF6E9;
+  /* The comic page itself (2026-08-13). Body was pure white, so texture only existed in the
+     hero and closing bands and everything between read as a plain document. Now the page is
+     warm newsprint carrying a Ben-Day field, and each content section sits on it as a white
+     panel with an ink frame -- which is literally how a comic page is built. Deeper than
+     --wash on purpose: white panels have to read as panels against it. */
+  --paper: #F3E7D3;
+  --paper-dot: rgba(11, 11, 11, .055);
+  /* Panels carry a lighter offset than --pop: 5px on every section down a 184-page site is
+     shouting, 3px reads as ink-on-paper. */
+  --pop-panel: 3px 3px 0 var(--ink);
+  --font-head: 'DM Sans', system-ui, -apple-system, Arial, sans-serif;
+  --font-display: 'Bangers', 'DM Sans', system-ui, Arial, sans-serif;
+  --font-body: 'Inter', system-ui, -apple-system, Arial, sans-serif;
+  --gap: 1.25rem;
+  /* Hairline that has to actually be visible against white and cream. */
+  --rule: #d9d2c4;
+  /* The comic frame: thick ink border + hard offset shadow, shared by cards, tables,
+     diagrams, and the CTA bubble. */
+  --frame: 3px solid var(--ink);
+  --pop: 5px 5px 0 var(--ink);
+  /* The reading column. Every piece of article content -- prose, lists, headings, tables,
+     diagrams, FAQ rows, the related mesh -- is laid out on this one measure, so the page has a
+     single text column instead of a narrow paragraph floating in a much wider shell. */
+  --col: 42rem;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background:
+    radial-gradient(circle, var(--paper-dot) 1.5px, transparent 1.5px) 0 0 / 18px 18px,
+    var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+img, svg { max-width: 100%; display: block; }
+a { color: var(--primary); }
+p { margin: 0 0 1rem; }
+
+h1, h2, h3 {
+  font-family: var(--font-head);
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.2;
+  margin: 0 0 .75rem;
+  /* Headings are capped to the reading column, which left several of the long ones with a
+     single word alone on the last line. Balancing evens the lines out instead. */
+  text-wrap: balance;
+}
+/* Display headings wear the comic face. Bangers is a single-weight face that sets wide and
+   loud, so h1/h2 move to it while h3 subheads stay on DM Sans -- three tiers of voice:
+   shout, speak, aside. Letter-spacing opens Bangers' tight fit at text sizes. */
+h1, h2 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: .04em;
+  line-height: 1.08;
+}
+h1 { font-size: 2.3rem; }
+h2 { font-size: 1.65rem; }
+h3 { font-size: 1.15rem; }
+/* h3 subheads sit inside flowing section copy, breaking up a long paragraph run, rather than
+   opening their own container the way h1/h2 do. The shared heading rule above carries no top
+   margin, which reads fine when a heading is the first thing in a box; mid-copy it needs one, so
+   a subhead reads as a break from the paragraph above it instead of sitting flush against it. */
+h3 { margin-top: 1.75rem; }
+
+.wrap, header.hd, footer.ft {
+  width: 100%;
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 0 1.25rem;
+}
+/* main carries no gutter of its own: sections and the breadcrumb strip each center their own
+   content on --col, and a gutter here would only push the article off that shared axis (it also
+   used to indent body copy 20px past the logo above it, which read as a misalignment). */
+main { width: 100%; max-width: 72rem; margin: 0 auto; padding: 0; }
+
+/* Header: logo / nav / tel. No sticky positioning. The ink rule below it is the first
+   comic frame line on every page. */
+header.hd {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: .75rem;
+  padding-top: .6rem;
+  padding-bottom: .6rem;
+  border-bottom: 4px solid var(--ink);
+}
+header.hd .logo {
+  display: inline-block;
+  line-height: 0;
+}
+header.hd .logo img {
+  height: 160px;
+  width: 160px;
+}
+/* Mobile menu button. Styled here, revealed only in the narrow breakpoint below, and only
+   once the script adds .js-nav. Same chunky treatment as the panels: ink frame, hard offset
+   shadow, and a press that moves the button onto its own shadow. */
+.navtoggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  padding: 0;
+  background: var(--wash);
+  border: var(--frame);
+  box-shadow: var(--pop-panel);
+  border-radius: 6px;
+  cursor: pointer;
+  color: var(--ink);
+}
+.navtoggle:active { transform: translate(3px, 3px); box-shadow: none; }
+.navtoggle .bars { position: relative; }
+.navtoggle .bars,
+.navtoggle .bars::before,
+.navtoggle .bars::after {
+  display: block;
+  width: 22px;
+  height: 3px;
+  background: currentColor;
+  border-radius: 2px;
+}
+.navtoggle .bars::before,
+.navtoggle .bars::after { content: ''; position: absolute; left: 0; }
+.navtoggle .bars::before { top: -7px; }
+.navtoggle .bars::after { top: 7px; }
+/* Open: the three bars collapse into a close X, so the same control reads as "shut this". */
+header.hd.nav-open .navtoggle .bars { background: transparent; }
+header.hd.nav-open .navtoggle .bars::before { top: 0; transform: rotate(45deg); }
+header.hd.nav-open .navtoggle .bars::after { top: 0; transform: rotate(-45deg); }
+@media (prefers-reduced-motion: no-preference) {
+  .navtoggle .bars, .navtoggle .bars::before, .navtoggle .bars::after { transition: transform .15s ease, top .15s ease; }
+}
+header.hd nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem 1rem;
+  order: 3;
+  width: 100%;
+}
+header.hd nav a {
+  color: var(--ink);
+  text-decoration: none;
+  font-size: .9rem;
+  /* At 390 the seven links wrap onto two rows; without this the rows are ~22px tall and sit
+     close enough that a thumb hits the wrong one. */
+  padding: .35rem 0;
+}
+header.hd nav a:hover { color: var(--primary); }
+header.hd nav a { font-weight: 600; }
+.tel {
+  font-weight: 600;
+  color: var(--primary);
+}
+/* Undecorated only up in the header, where it is a nav item. The same class is used mid
+   sentence on the contact page, and there it has to look like a link the reader can tap. */
+header.hd .tel { text-decoration: none; white-space: nowrap; }
+header.hd .tel:hover, header.hd .tel:focus { text-decoration: underline; }
+
+.contact-form { display: block; }
+
+/* Every section is full-shell wide (so the hero wash and the section rules read as bands that
+   span the page) but lays its content out on --col, centered. Before this, prose was capped at
+   42rem while the hero band, section rules, tables, diagrams, the related grid and the FAQ rows
+   all ran the full 1110px shell: the column read as an orphan pinned to the left with ~420px of
+   dead white beside it, not as a chosen measure. max() keeps the 1.25rem gutter on narrow
+   screens, where the column cap is never reached. */
+section {
+  padding: 2rem max(1.25rem, calc((100% - var(--col)) / 2));
+  max-width: 72rem;
+  margin: 0 auto;
+}
+/* Panel gutters: every content section is a white panel framed in ink, sitting on the paper
+   with a real gutter between, so the page reads as a stack of comic panels instead of one long
+   scroll. This replaces the old shared border-top: with full frames the rule would double up. */
+main > section {
+  background: var(--bg);
+  border: var(--frame);
+  box-shadow: var(--pop-panel);
+  border-radius: 2px;
+  margin-bottom: 1.1rem;
+}
+/* The hero and the closing band carry their own fills and keep them; they just join the
+   panel geometry. */
+main > section.hero { border-bottom: var(--frame); }
+main > section.closing { margin-bottom: 0; }
+@media (max-width: 47.99rem) {
+  /* On a phone the offset shadow would push the panel off-centre inside the viewport, so
+     panels keep the frame and drop the shadow. */
+  main > section { box-shadow: none; }
+}
+
+/* Hero */
+/* The seven pages with no breadcrumb (home, the hubs, about/contact/results) would otherwise
+   butt the wash band straight against the header's bottom rule, so the band reads as part of
+   the header. This is the white gap the breadcrumb strip gives every other page. */
+main > section.hero:first-child { margin-top: 1.25rem; }
+section.hero {
+  /* Cream paper with a Ben-Day halftone dot field -- the logo's world, as a band. */
+  background:
+    radial-gradient(circle, rgba(228, 0, 43, .09) 1.6px, transparent 1.6px) 0 0 / 17px 17px,
+    var(--wash);
+  border-top: none;
+  border-bottom: 3px solid var(--ink);
+  text-align: left;
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
+}
+section.hero h1 {
+  margin-bottom: .5rem;
+  color: var(--primary);
+  /* The hard offset shadow is the superhero-masthead move, matched to the logo lettering. */
+  text-shadow: 2.5px 2.5px 0 var(--ink);
+}
+section.hero .lead {
+  font-size: 1.1rem;
+  color: var(--ink);
+  margin-bottom: 1.5rem;
+}
+/* The contact page hero deliberately carries no CTA button. Without this its lead margin plus
+   the hero's own bottom padding left ~90px of empty wash under the last line. */
+section.hero .lead:last-child { margin-bottom: 0; }
+/* The CTA is a yellow action bubble: comic frame, hard shadow, display lettering. */
+.cta {
+  display: inline-block;
+  background: var(--accent);
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 1.1rem;
+  letter-spacing: .05em;
+  text-decoration: none;
+  padding: .65rem 1.5rem;
+  border: var(--frame);
+  border-radius: 999px;
+  box-shadow: var(--pop);
+}
+.cta:hover, .cta:focus {
+  color: var(--ink);
+  transform: translate(-2px, -2px);
+  box-shadow: 7px 7px 0 var(--ink);
+}
+.cta:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--ink); }
+@media (prefers-reduced-motion: reduce) {
+  .cta:hover, .cta:focus, .cta:active { transform: none; box-shadow: var(--pop); }
+}
+
+/* FAQ */
+.faq details {
+  border-bottom: 1px solid var(--wash);
+  padding: .75rem 0;
+}
+/* The FAQ block is the last thing on every page that has one, so its closing rule landed a few
+   dozen pixels above the footer's rule. Two near-parallel hairlines of different widths (one on
+   the column, one on the band) read as a mistake. The footer rule closes the list. */
+.faq details:last-child { border-bottom: none; }
+/* Padding (not just the line box) makes the tap target: the short one-line questions were
+   measuring ~26px tall, well under the 44px touch minimum, while longer ones already passed. */
+.faq summary {
+  font-family: var(--font-head);
+  font-weight: 700;
+  cursor: pointer;
+  color: var(--ink);
+  padding: .6rem 0;
+  /* Hanging indent. With the marker inside the text box, a question that wrapped (most of them
+     do at 390) put line two back under the triangle, so the question had a ragged left edge. */
+  list-style-position: outside;
+  margin-left: 1.15rem;
+  /* Same reason as the headings: on the reading measure a few questions wrap with one word
+     alone on line two. */
+  text-wrap: balance;
+}
+.faq summary::marker { color: var(--primary); }
+/* Answer aligns with the question text, not with the triangle. */
+.faq p { margin-top: .5rem; margin-left: 1.15rem; }
+
+/* Body lists. The copy wave turned many dense paragraphs into bullets, but adjacent list
+   items had no separation at all (measured 0-3px between 400+ item pairs sitewide), so a
+   6-item list read as one gray block and undid the point of bulleting it. The related-pages
+   mesh is excluded: it is a grid and sets its own gap. */
+section:not(.related) li + li { margin-top: .4rem; }
+/* The browser default is 40px, which on a phone spent 13% of the screen on empty indent and
+   pushed the longest content on the how-to pages into a measure narrower than its own prose.
+   1.15rem matches the FAQ question and related-item indents, so every hanging element on the
+   site steps off the reading column by the same amount. The longest ordered list is 6 items,
+   so a single digit plus its period always fits. */
+main ul, main ol { padding-left: 1.15rem; }
+
+/* Glossary-style definition lists: term needs to visually outrank its definition,
+   which the browser default (indent only, no weight/family change) does not do. */
+dl { margin: 0 0 1rem; }
+dt {
+  font-family: var(--font-head);
+  font-weight: 700;
+  /* Bold alone did not carry it: DM Sans at the body size read no larger than the Inter
+     definition under it, and a .75rem pair gap barely beat the term-to-definition gap, so nine
+     glossary entries stacked into one grey block. */
+  font-size: 1.05rem;
+  margin-top: 1.35rem;
+}
+dt:first-of-type { margin-top: 0; }
+dd { margin: .15rem 0 0 0; font-size: .95rem; }
+
+/* Footer: the closing ink panel of every page. */
+footer.ft {
+  /* Same column axis as the article above it. min() because a percentage here resolves against
+     the viewport, not against the footer's own 72rem box, which would push the text 144px
+     right of the column on a wide screen. */
+  padding: 1.75rem max(1.25rem, calc((min(100%, 72rem) - var(--col)) / 2)) 2rem;
+  border-top: 4px solid var(--ink);
+  background: var(--ink);
+  color: #f3efe6;
+}
+footer.ft p { margin: 0 0 .25rem; }
+footer.ft .links {
+  font-size: .85rem;
+}
+footer.ft .links a {
+  color: var(--accent);
+  text-decoration: underline;
+}
+footer.ft .links a:hover,
+footer.ft .links a:focus {
+  color: #ffffff;
+}
+footer.ft .legal {
+  font-size: .8rem;
+  color: #a9a294;
+}
+
+/* Standing measurement note (2026-08-05 owner-lens): one uniform small-print block on pages
+   that publish measured figures, replacing methodology disclaimers scattered through prose. */
+.measure-note {
+  font-size: .8rem;
+  color: #6a6458;
+  margin-top: 2.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--rule);
+}
+
+/* Definition blocks (W1.5b): a quotable, standalone definition near the top of a service
+   page, modestly set apart from ordinary body copy with a left accent border only. */
+p.def {
+  border-left: 4px solid var(--primary);
+  padding-left: 1rem;
+  margin: 0 0 1.25rem;
+}
+
+/* Diagrams (W1.5b): brand-styled inline SVG figures dropped into section copy. Card sits on
+   a wash background so the white SERP mockup (the one diagram with a white inner surface)
+   reads as a card; svg text carries no font-family of its own, so it inherits DM Sans here
+   rather than each diagram hardcoding a font stack. */
+/* Diagrams sit in comic frames now: ink border, hard shadow, white surface. */
+figure.diagram {
+  margin: 1.75rem 0;
+  padding: 1.25rem;
+  background: var(--bg);
+  border: var(--frame);
+  border-radius: .35rem;
+  box-shadow: var(--pop);
+}
+figure.diagram svg {
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto;
+}
+figure.diagram svg text {
+  font-family: var(--font-head);
+}
+figure.diagram figcaption {
+  margin-top: .85rem;
+  font-size: .85rem;
+  color: #5a6a61;
+  text-align: center;
+}
+
+/* In-flow flyby divider: the hero streaking across a section break, all widths. */
+img.flyby {
+  display: block;
+  height: 120px;
+  width: auto;
+  margin: 1.75rem auto 0;
+}
+@media (max-width: 47.99rem) {
+  img.flyby { height: 88px; }
+}
+
+/* The mascot. Hero pose on pages that opt in (home), closing pose sitewide. Both are
+   decorative absolutely-positioned art living in the shell's side margins, hidden below
+   62rem where the reading column takes the full width and they would sit on the copy. */
+section.hero { position: relative; }
+.mascot-hero { display: none; }
+.mascot-closing { display: none; }
+@media (min-width: 62rem) {
+  section.hero:has(.mascot-hero) h1,
+  section.hero:has(.mascot-hero) .lead { max-width: 30rem; }
+  .mascot-hero {
+    display: block;
+    position: absolute;
+    right: 2rem;
+    bottom: 0;
+    height: 92%;
+    max-height: 330px;
+    width: auto;
+  }
+  .mascot-closing {
+    display: block;
+    position: absolute;
+    right: 1.5rem;
+    bottom: .75rem;
+    height: 215px;
+    width: auto;
+    /* a whisper of drop shadow lifts him off the ink panel */
+    filter: drop-shadow(3px 3px 0 rgba(255, 209, 0, .25));
+  }
+}
+
+/* Closing band (renderer p.closing): the final panel of every page, inverted to ink with a
+   faint yellow halftone -- the page ends on a black comic frame with a yellow shout. */
+section.closing {
+  position: relative;
+  background:
+    radial-gradient(circle, rgba(255, 209, 0, .12) 1.5px, transparent 1.5px) 0 0 / 16px 16px,
+    var(--ink);
+  color: #f3efe6;
+  border-top: none;
+  margin-top: .5rem;
+}
+section.closing h2 {
+  color: var(--accent);
+  text-shadow: 2px 2px 0 rgba(228, 0, 43, .55);
+}
+section.closing a:not(.cta) { color: var(--accent); }
+section.closing .tel { color: var(--accent); }
+/* On the ink panel the bubble's ink border and shadow vanish; a white hard shadow keeps
+   the pop. */
+section.closing .cta { box-shadow: 5px 5px 0 #ffffff; }
+section.closing .cta:hover, section.closing .cta:focus { box-shadow: 7px 7px 0 #ffffff; }
+section.closing .cta:active { box-shadow: 2px 2px 0 #ffffff; }
+section.closing .smallprint { color: #a9a294; }
+
+/* The FROM NOWHERE comic. Everything below is scoped to `.fn`, the class the three comic act
+   sections on /proof/junk-n-your-trunk/ carry, so this whole block (including its keyframes,
+   which are only ever referenced from inside the scope) reaches exactly one page.
+
+   Panels are inline SVGs that scale to whatever column they are given, so the layout decisions
+   here are just how wide the strip gets, how many panels sit in a row, and which ones break the
+   grid. Body copy on this site is capped at --col (42rem). A comic read at 42rem puts two
+   panels per row at ~330px each, which is under the width the caption lettering needs, so from
+   62rem up the strip breaks out of the reading column to the full 72rem shell and runs two up.
+   The breakout is the margin-left:50% + translateX(-50%) pair: 50% of the content box lands the
+   left edge on the page's centre line, and the transform pulls it back by half its own width,
+   so the strip stays centred on the same axis as the prose at any viewport width. */
+.fn .comic-title { margin: 0 0 1.25rem; }
+.fn .comic-title svg { width: 100%; height: auto; }
+.fn .comic-strip { display: grid; gap: 1.75rem; margin: 1.5rem 0 0; }
+.fn figure.panel { margin: 0; }
+.fn figure.panel svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  /* SVG text carries no font-family of its own, exactly like the diagrams, so the lettering
+     inherits DM Sans at heavy weight rather than each panel hardcoding a stack. */
+}
+.fn figure.panel svg text { font-family: var(--font-head); }
+/* Dutch tilt on the tension beats. The paired scale keeps the rotated corners inside the grid
+   cell instead of clipping against the next panel. */
+.fn figure.panel.tilt-a svg { transform: rotate(-1.9deg) scale(.975); }
+.fn figure.panel.tilt-b svg { transform: rotate(1.5deg) scale(.978); }
+.fn figure.panel.tilt-c svg { transform: rotate(1deg) scale(.985); }
+.fn figure.panel figcaption {
+  margin-top: .7rem;
+  font-size: .92rem;
+  line-height: 1.5;
+  color: #3c4a43;
+}
+/* The panel number is a marker, not a word in the sentence: it hangs at the same 1.15rem step
+   every other hanging element on the site uses. */
+.fn figure.panel figcaption .pn {
+  display: inline-block;
+  min-width: 1.5rem;
+  font-family: var(--font-head);
+  font-weight: 700;
+  color: var(--accent);
+}
+.fn figure.panel figcaption .stat {
+  display: block;
+  margin: 0 0 .25rem 1.5rem;
+  font-family: var(--font-head);
+  font-weight: 700;
+  color: var(--primary);
+}
+.fn figure.panel figcaption .say { display: block; margin: .25rem 0 0 1.5rem; font-style: italic; }
+/* Panel 5 carries dialogue and no caption, so its quote stays on the number's line. */
+.fn figure.panel figcaption .say.lead { display: inline; margin: 0; }
+.smallprint { font-size: .85rem; color: #5a6a61; }
+
+@media (min-width: 62rem) {
+  .fn .comic-title, .fn .comic-strip {
+    width: min(100vw - 3rem, 69rem);
+    margin-left: 50%;
+    transform: translateX(-50%);
+  }
+  .fn .comic-strip { grid-template-columns: repeat(2, 1fr); gap: 2.25rem 2.25rem; }
+  /* The arrival, time, the splash and the last shot run the full width of the strip. Below
+     62rem the strip is one column already, so the span is only needed here. */
+  .fn figure.panel.wide { grid-column: 1 / -1; }
+}
+
+/* Micro motion, all of it optional. Everything lives inside a no-preference query, so a reader
+   who asks for reduced motion gets the strip fully static and fully drawn: no element starts
+   hidden or offset outside this block, and no keyframe is referenced from outside it.
+
+   No JS anywhere. The scroll reveal is CSS scroll driven animation behind an @supports gate,
+   because without a view() timeline the same declaration would run once on the document
+   timeline and could leave a panel stuck at its opening frame. */
+@media (prefers-reduced-motion: no-preference) {
+  /* the cape still catching up with the landing */
+  .fn .fn-cape {
+    transform-box: fill-box;
+    transform-origin: 8% 92%;
+    animation: fnCape 3.6s ease-in-out infinite alternate;
+  }
+  @keyframes fnCape {
+    from { transform: rotate(-1.8deg) translate(0, 0); }
+    to { transform: rotate(2.4deg) translate(-3px, -5px); }
+  }
+  /* the splash action lines breathing */
+  .fn .fn-shimmer { animation: fnShimmer 7s ease-in-out infinite; }
+  @keyframes fnShimmer {
+    0%, 100% { opacity: .45; }
+    50% { opacity: 1; }
+  }
+  @supports (animation-timeline: view()) {
+    .fn figure.panel {
+      animation: fnRise linear both;
+      animation-timeline: view();
+      animation-range: entry 5% cover 24%;
+    }
+    @keyframes fnRise {
+      from { opacity: 0; transform: translateY(28px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  }
+}
+
+/* Tables that may overflow on narrow screens. The wrapper carries the bottom margin: the
+   last row's border-bottom otherwise sits flush against the paragraph that follows (measured
+   gap was 0px on every table at both widths), so the prose read as part of the table. */
+.tblwrap { overflow-x: auto; margin: 2rem 0; }
+table { border-collapse: collapse; width: 100%; }
+/* Auto layout hands width to the column with the most text, which on the one table whose second
+   cell is a full sentence squeezed every label in column one onto two lines. */
+th:first-child, td:first-child { min-width: 10rem; }
+/* Cell padding on the outer edges pushed the table's text a step off the reading column while
+   its tint band and row rules stayed on it. */
+th:first-child, td:first-child { padding-left: 0; }
+th:last-child, td:last-child { padding-right: 0; }
+th, td {
+  padding: .5rem .75rem;
+  text-align: left;
+  border-bottom: 1px solid var(--wash);
+  /* Rows are two cells of very different length. Centered, a 3-word label floated in the
+     middle of a 6-line cell with ~50px of blank above and below it. */
+  vertical-align: top;
+}
+/* Header row has to outrank the rows it labels: a --wash hairline and bold alone did not, and
+   on two pages the header text wraps exactly like the body text under it. */
+thead th {
+  background: rgba(255, 209, 0, .3);
+  font-family: var(--font-head);
+  border-bottom: 2px solid var(--ink);
+}
+
+/* Skip link: visually hidden until keyboard focus reaches it, then jumps above everything. */
+.skip {
+  position: absolute;
+  left: -999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+.skip:focus {
+  position: fixed;
+  left: 1rem;
+  top: 1rem;
+  z-index: 100;
+  width: auto;
+  height: auto;
+  padding: .6rem 1rem;
+  background: var(--primary);
+  color: #fff;
+  font-family: var(--font-head);
+  font-weight: 700;
+  text-decoration: none;
+  border-radius: .25rem;
+}
+
+/* Breadcrumbs: a modest wayfinding strip above the hero band, mirrors the BreadcrumbList
+   schema exactly. Muted so it never competes with the h1 that follows it. */
+/* Sits directly in main, so it centers itself on --col the same way a section does. Otherwise
+   the trail hangs left of every other line of text on the page. */
+.crumbs { padding: .85rem max(1.25rem, calc((100% - var(--col)) / 2)) .6rem; }
+.crumbs ol {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0;
+  padding: 0;
+  font-size: .85rem;
+}
+.crumbs li { color: #5a6a61; }
+.crumbs li:not(:last-child)::after { content: "/"; margin: 0 .5em; color: #9aa79f; }
+.crumbs a { color: #5a6a61; text-decoration: none; }
+.crumbs a:hover, .crumbs a:focus { color: var(--primary); text-decoration: underline; }
+.crumbs li[aria-current="page"] { color: var(--ink); }
+
+/* Related-pages mesh: compact and modest, visually distinct from an in-copy body link
+   (bold heading-family label + a small muted note under it, laid out in a light stack).
+   One column at every width: split across two ~330px columns on the reading measure, most
+   notes wrapped to a second line ending in a single orphaned word, and a three-item block
+   left an empty cell. Each note fits on one line at full column width. */
+.related h2 { margin-bottom: 1rem; }
+.related ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 1.1rem;
+}
+.related li {
+  border-left: 3px solid var(--primary);
+  padding-left: .9rem;
+}
+.related a {
+  font-family: var(--font-head);
+  font-weight: 700;
+  text-decoration: none;
+}
+.related a:hover, .related a:focus { text-decoration: underline; }
+.related .note {
+  display: block;
+  font-size: .9rem;
+  color: #5a6a61;
+  margin-top: .15rem;
+}
+
+/* Narrow screens. Two things need help here that don't at desktop width:
+   1. Diagrams. The SVGs are drawn on 560-640 unit viewBoxes with 10-16 unit label text, so
+      how legible they are is purely a function of how much width they get. Inside the gutter
+      they were down to 270px, a 0.42-0.48 scale that rendered labels at 5-8px; bleeding the
+      figure out to both screen edges gets them to 382px. Deliberately no min-width: forcing
+      the SVG wider than the screen bought about 1.5px of label height and cost a clipped
+      diagram the reader has to swipe, which is the worse trade for a conceptual illustration.
+   2. Tables. Two columns of very unequal length in 350px. Both need the type a notch down and
+      the cells tighter before either side stops wrapping badly. */
+@media (max-width: 47.99rem) {
+  header.hd .logo img { height: 112px; width: 112px; }
+
+  /* The seven nav links wrapped onto two full-width rows under the logo. That cost about 70px
+     above the fold on every page and gave the header no clean bottom edge. Behind a button
+     they cost nothing until asked for. Everything here is scoped to .js-nav, which the script
+     adds: if it never runs, the old visible row is still what renders. */
+  header.hd.js-nav { flex-wrap: wrap; }
+  header.hd.js-nav .navtoggle { display: flex; order: 2; margin-left: auto; }
+  /* The header phone number goes on mobile. It is not lost: the sticky footer bar carries the
+     same tel link on every screen at all times, and dropping it here is what frees the corner
+     the button needs. */
+  header.hd.js-nav .tel { display: none; }
+  header.hd.js-nav nav { display: none; }
+  header.hd.js-nav.nav-open nav {
+    display: flex;
+    flex-direction: column;
+    order: 4;
+    width: 100%;
+    gap: 0;
+    margin-top: .55rem;
+    border-top: 3px solid var(--ink);
+  }
+  /* Full-width rows with a rule between them: a thumb aiming at one link cannot land on its
+     neighbour, which was the failure mode of the wrapped two-row layout. */
+  header.hd.js-nav.nav-open nav a {
+    padding: .85rem .25rem;
+    font-size: 1.05rem;
+    border-bottom: 2px solid rgba(11, 11, 11, .12);
+  }
+  header.hd.js-nav.nav-open nav a:last-child { border-bottom: 0; }
+  /* At the screen-edge bleed the hard shadow would clip; drop it and keep the frame. */
+  figure.diagram { box-shadow: none; }
+  figure.diagram {
+    /* main no longer adds a gutter, so the section's own 1.25rem is all that stands between
+       the figure and the screen edge. */
+    margin-left: -1.25rem;
+    margin-right: -1.25rem;
+    padding: 1rem .25rem;
+    border-radius: 0;
+  }
+  /* A fixed 42% split was tuned on one table and hurt the other three: it starved the pricing
+     pages' long label column ("Competitive or multi market campaign" on three lines) while the
+     money column kept slack. Letting auto layout size each table to its own content, one notch
+     down in type, cut badly-wrapped cells from 9 to 3 across the site's four tables. The floor
+     stops the one table with a long sentence in column two from crushing its labels to 82px. */
+  table { font-size: .9rem; }
+  th, td { padding: .5rem .5rem; }
+  th:first-child, td:first-child { min-width: 7.5rem; }
+  /* Stacked related items need more air than the desktop grid: when a note wraps to two lines,
+     a .9rem gap put the next item's title almost on top of it. */
+  .related ul { gap: 1.25rem; }
+}
+
+@media (min-width: 48rem) {
+  h1 { font-size: 3.1rem; }
+  h2 { font-size: 2rem; }
+  h3 { font-size: 1.3rem; }
+  header.hd nav { order: 2; width: auto; }
+  header.hd .tel { order: 3; }
+  section { padding-top: 3rem; padding-bottom: 3rem; }
+  section.hero { padding-top: 4rem; padding-bottom: 4rem; }
+  /* Nav centers on the page axis rather than wherever space-between drops it, now that the
+     article below it establishes a strong centre line. */
+  header.hd .logo, header.hd .tel { flex: 1 1 0; }
+  header.hd .tel { text-align: right; }
+}
+
+/* THE KEYS story page (/story/). Scoped under .keys, same isolation pattern as .fn:
+   nothing here reaches other pages. Lettering is real text in figcaptions so the
+   strip stays indexable and screen-readable. */
+.keys figure.kp { margin: 1.8rem 0; border: var(--frame); box-shadow: var(--pop); background: #fff; }
+.keys .kp img { display: block; width: 100%; height: auto; }
+.keys .kp figcaption { border-top: 3px solid var(--ink); background: var(--wash); padding: 0.75rem 1.1rem 0.9rem; }
+.keys .kp-say { display: block; background: #fff; border: 2px solid var(--ink); border-radius: 16px; padding: 0.4rem 0.9rem; margin: 0.45rem auto; max-width: 34rem; box-shadow: 2px 2px 0 rgba(11, 11, 11, 0.18); }
+.keys .kp-say b { font-family: var(--font-display); font-weight: 400; letter-spacing: 0.04em; }
+.keys .kp-say.hero b { color: var(--primary); }
+.keys .kp-say.villain b { color: #1c7a3d; }
+.keys .kp-say.owner b { color: #555; }
+.keys .kp-cap { display: block; text-align: center; font-style: italic; margin: 0.4rem 0 0; }
+
+/* ------------------------------------------------------------------------- icon marks
+   Drawn from the villain matchup props (georgia/brand/icons/README.md). Used as list bullets
+   and FAQ markers, where a 48px mark reads and a 1200x670 panel cannot. */
+.related li {
+  background-image: url('/assets/img/icons/key.svg');
+  background-repeat: no-repeat;
+  background-position: 0 .15rem;
+  background-size: 22px 22px;
+  padding-left: 2rem;
+  /* The old red left-rule is replaced by the mark, so drop it rather than run both. */
+  border-left: none;
+}
+.faq summary::marker { content: ''; }
+.faq summary {
+  background-image: url('/assets/img/icons/magnifier.svg');
+  background-repeat: no-repeat;
+  background-position: 0 .55rem;
+  background-size: 20px 20px;
+  padding-left: 1.9rem;
+}
+.faq details[open] summary {
+  background-image: url('/assets/img/icons/chart-up.svg');
+}
+
+/* ------------------------------------------------------------------- the audit lead form
+   Ours, not a GHL iframe, so it inherits the panel language: ink frame, hard offset, cream
+   fill against the white panel it sits on. Posts to forge-lead-worker. */
+.leadform {
+  margin: 1.6rem 0 .5rem;
+  padding: 1.25rem;
+  background: var(--wash);
+  border: var(--frame);
+  box-shadow: var(--pop-panel);
+  border-radius: 2px;
+}
+.leadform-h { margin: 0 0 .9rem; font-family: var(--font-display); font-size: 1.5rem; letter-spacing: .02em; }
+.lf-row { margin-bottom: .85rem; }
+.lf-row label { display: block; font-family: var(--font-head); font-weight: 700; font-size: .95rem; margin-bottom: .3rem; }
+.lf-row .req { color: var(--primary); }
+.lf-row input, .lf-row textarea {
+  width: 100%;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  padding: .6rem .7rem;
+  border: 2px solid var(--ink);
+  border-radius: 2px;
+  background: #fff;
+  color: var(--ink);
+}
+.lf-row textarea { resize: vertical; }
+.lf-row input:focus-visible, .lf-row textarea:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: 1px;
+}
+.lf-hint { display: block; font-size: .85rem; color: #5a5348; margin-top: .25rem; }
+/* Honeypot. Off-screen rather than display:none so a bot filling every field still trips it,
+   and aria-hidden + tabindex -1 keep it away from real people and screen readers. */
+.lf-hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.leadform button.cta { margin-top: .35rem; }
+.leadform button.cta[disabled] { opacity: .65; cursor: default; }
+.lf-status { margin: .8rem 0 0; font-weight: 600; min-height: 1.2em; }
+.lf-status.is-good { color: #1c7a3d; }
+.lf-status.is-bad { color: var(--primary); }
+
+/* ------------------------------------------------------------------ mobile sticky CTA
+   Phone and audit button pinned to the bottom on phones only. Desktop already has both in
+   the header, where they do not cost scroll space. The body gets bottom padding to match so
+   the bar can never cover the last line of the footer. */
+.stickycta { display: none; }
+@media (max-width: 47.99rem) {
+  .stickycta {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: .5rem;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 40;
+    padding: .55rem .7rem calc(.55rem + env(safe-area-inset-bottom, 0px));
+    background: var(--ink);
+    border-top: 3px solid var(--accent);
+  }
+  .stickycta a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    /* 44px minimum touch target. */
+    min-height: 44px;
+    padding: .5rem .4rem;
+    border-radius: 4px;
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: .95rem;
+    text-decoration: none;
+    border: 2px solid var(--ink);
+  }
+  .sticky-tel { background: #fff; color: var(--ink); }
+  .sticky-cta { background: var(--accent); color: var(--ink); }
+  .stickycta a:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
+  body { padding-bottom: 4.6rem; }
+}
+
+/* The Matchups grid on /story/: two-up on desktop, single column under 48rem. */
+.keys .vs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(21rem, 1fr)); gap: 1.2rem; }
+.keys .vs-grid figure.kp { margin: 0; }
+
+/* ------------------------------------------------------------------ section art
+   A section carrying `art` puts a VS matchup panel beside its copy, alternating side
+   by section index (even = right, odd = left). These panels are 1200x670 two-character
+   scenes: they need real width to read, so below 64rem they stop being a side column
+   and sit full-width under the heading instead of shrinking into mush. Decorative by
+   intent (empty alt, aria-hidden) because the copy carries every fact. */
+section.art .sec-art {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: var(--frame);
+  box-shadow: var(--pop);
+  background: #fff;
+  margin: 1.1rem 0 0.4rem;
+}
+@media (min-width: 64rem) {
+  /* Sections are normally padded so their content sits on the --col (42rem) reading measure,
+     which leaves ~24rem of dead white inside the 72rem shell. Art sections spend exactly that
+     dead space on the panel: the prose keeps its full measure, the art takes the margin. */
+  section.art {
+    display: grid;
+    grid-template-columns: minmax(0, var(--col)) minmax(0, 1fr);
+    grid-template-rows: auto 1fr;
+    column-gap: 2.5rem;
+    align-items: start;
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+  }
+  section.art > h2 { grid-column: 1; grid-row: 1; }
+  section.art .sec-body { grid-column: 1; grid-row: 2; min-width: 0; }
+  section.art .sec-art { grid-column: 2; grid-row: 1 / span 2; align-self: start; margin: 0; }
+  /* Odd sections flip: art on the left, heading and copy on the right. */
+  section.art-left { grid-template-columns: minmax(0, 1fr) minmax(0, var(--col)); }
+  section.art-left > h2,
+  section.art-left .sec-body { grid-column: 2; }
+  section.art-left .sec-art { grid-column: 1; }
+  /* The roaming flyby mascot would collide with a side column, so art sections drop it. */
+  section.art img.flyby { display: none; }
+
+  /* ---------------------------------------------------------- list panels use their width
+     Prose belongs on the 42rem measure. Link lists do not: the related mesh and the FAQ were
+     stacking in a narrow ribbon with roughly 30rem of empty panel beside them, which read as
+     a column that had fallen over rather than a designed measure. These two panels get a
+     wider measure, and the related mesh runs two-up so four links fill the space as a block
+     instead of a queue. The FAQ stays single-column on purpose: <details> rows in two columns
+     reflow the neighbouring column every time one is opened. */
+  main > section.related,
+  main > section.faq {
+    padding-left: max(1.25rem, calc((100% - 58rem) / 2));
+    padding-right: max(1.25rem, calc((100% - 58rem) / 2));
+  }
+  .related ul {
+    grid-template-columns: 1fr 1fr;
+    column-gap: 2.75rem;
+    row-gap: 1.35rem;
+  }
+}
+
+/* ------------------------------------------------------------------- results board (/results/)
+   The client-performance board, rendered by tools/lib/resultsboard.mjs from committed capture
+   data. Everything is scoped under .rb-* so none of it can reach the other 183 pages.
+
+   This board is evidence, so the layout is built to keep the numbers legible rather than to
+   look impressive: counts get the display face at a size that survives a phone, and the honest
+   misses ("not top 3", "No") are styled as quieter but NOT hidden. A results page that visually
+   suppresses its gaps is the thing this page exists to be the opposite of. */
+.rb-tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(8.5rem, 1fr));
+  gap: .7rem;
+  margin: 1.25rem 0;
+}
+.rb-tile {
+  border: var(--frame);
+  box-shadow: var(--pop-panel);
+  background: var(--wash);
+  padding: .8rem .7rem;
+  text-align: center;
+}
+.rb-num {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 2.3rem;
+  line-height: 1;
+  color: var(--primary);
+  -webkit-text-stroke: 1.5px var(--ink);
+}
+.rb-lab {
+  display: block;
+  margin-top: .3rem;
+  font-size: .82rem;
+  font-weight: 600;
+  line-height: 1.25;
+}
+/* The topline sits on the paper rather than inside a panel, so it reads as a scoreboard above
+   the per-client panels instead of competing with them. */
+.rb-topline .rb-tile { background: var(--bg); }
+
+.rb-board { display: grid; gap: 1.6rem; margin-top: 1.25rem; }
+.rb-card {
+  border: var(--frame);
+  box-shadow: var(--pop);
+  background: var(--bg);
+  padding: 1.1rem 1.1rem 1.25rem;
+  /* A grid item defaults to min-width:auto, so the 36-column town grid stretched the card to
+     its own content width instead of scrolling inside it. The card grew past the viewport, the
+     document grew with it, and the page scrolled sideways by 2007px. min-width:0 lets the card
+     shrink so the overflow containers below can do their job. */
+  min-width: 0;
+}
+/* Belt and braces: neither scroll box may exceed its card regardless of table content. */
+.rb-gridwrap, .rb-kwwrap { max-width: 100%; }
+.rb-card h3 { margin-top: 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: .55rem; }
+.rb-metro {
+  font-family: var(--font-body);
+  font-size: .85rem;
+  font-weight: 400;
+  color: #5a6a61;
+  letter-spacing: 0;
+}
+.rb-meta { font-size: .9rem; color: #5a6a61; margin: .2rem 0 0; }
+.rb-card .rb-tiles { margin: .95rem 0 1.1rem; }
+.rb-card .rb-num { font-size: 1.9rem; }
+
+/* The table scrolls inside its own box rather than pushing the page sideways. Without this the
+   three columns came to 400px against a 390px viewport, the document grew to fit, and the
+   fixed sticky CTA stretched to the wider document, so the whole page scrolled horizontally by
+   31px. Ten pixels of table became a sitewide-looking layout bug on one page. */
+.rb-kwwrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.rb-kw { width: 100%; margin: 0; }
+.rb-kw th, .rb-kw td { text-align: left; }
+/* Data cells stay on one line so a rank never breaks; HEADERS may wrap, which is what buys the
+   width back on a phone. */
+.rb-kw td:nth-child(2), .rb-kw th:nth-child(2),
+.rb-kw td:nth-child(3), .rb-kw th:nth-child(3) { text-align: center; }
+.rb-kw td:nth-child(2), .rb-kw td:nth-child(3) { white-space: nowrap; }
+.rb-kw strong { color: var(--primary); }
+/* Search volume rides alongside the term it belongs to, quieter than the term itself. Absent
+   entirely where the API returned no number, rather than printed as a zero. */
+.rb-vol { font-size: .78rem; color: #5a6a61; white-space: nowrap; }
+/* Deliberately legible. A miss is a measurement, not an embarrassment to grey out. */
+.rb-miss { color: #6b6b6b; font-style: italic; }
+
+/* --- the town-by-town grid ---------------------------------------------------------------
+   Keywords down, towns across. This is the actual evidence, so it is shown at full width and
+   scrolled rather than summarized: a reader looking for their own town needs to find it.
+   The term column is sticky so a row stays identifiable once the grid is scrolled sideways. */
+.rb-towns { font-size: .9rem; margin: 0 0 1rem; }
+.rb-gridwrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border: 2px solid var(--ink);
+  background: var(--bg);
+}
+.rb-grid { width: auto; min-width: 100%; margin: 0; border-collapse: separate; border-spacing: 0; font-size: .82rem; }
+.rb-grid th, .rb-grid td { border: 0; border-bottom: 1px solid var(--rule); padding: .3rem .25rem; }
+.rb-grid thead th {
+  position: sticky; top: 0; z-index: 2;
+  background: var(--accent);
+  border-bottom: 2px solid var(--ink);
+  vertical-align: bottom;
+  font-size: .72rem;
+  line-height: 1.15;
+  padding: .4rem .3rem;
+  min-width: 3.1rem;
+}
+.rb-town { display: block; font-weight: 700; }
+.rb-dist { display: block; font-weight: 400; font-size: .66rem; color: #5f5a4e; }
+/* Row header: the tracked term. Sticky on the horizontal axis, and opaque so scrolled cells
+   pass behind it rather than showing through. */
+.rb-grid tbody th {
+  position: sticky; left: 0; z-index: 1;
+  background: var(--wash);
+  text-align: left;
+  font-weight: 600;
+  white-space: nowrap;
+  border-right: 2px solid var(--ink);
+  min-width: 10.5rem;
+}
+.rb-grid thead th:first-child {
+  position: sticky; left: 0; z-index: 3;
+  text-align: left;
+  min-width: 10.5rem;
+}
+.rb-grid tbody th .rb-vol { display: block; font-weight: 400; }
+/* Cells carry their spoken description in aria-label rather than a child <span>, so they hold
+   no children at all now. Two consequences worth knowing:
+   1. position:relative is gone. It existed only to anchor the absolutely-positioned .rb-sr
+      spans, which previously escaped to the document as their containing block and grew the
+      page's scroll width to 2300px. No child, no problem, and 6,920 needless stacking
+      contexts go with it.
+   2. An unmeasured cell is now genuinely empty, so it needs its own height. The &nbsp; used
+      to supply that. min-height does it without a DOM node. */
+.rb-c {
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  min-height: 1.5rem;
+}
+/* A held position is the loud state. 1, 2 and 3 step down in weight so a wall of them still
+   distinguishes a first from a third at a glance. */
+.rb-in { font-weight: 700; }
+.rb-p1 { background: var(--primary); color: #fff; }
+.rb-p2 { background: #f7b8c4; color: var(--ink); }
+.rb-p3 { background: #fbe0e6; color: var(--ink); }
+.rb-px { background: var(--wash); color: var(--ink); }
+/* Measured and missed. Visible, quiet, and NOT the same as unmeasured. */
+.rb-out { color: #8a8a8a; }
+/* Never measured. Hatched rather than blank so it cannot be mistaken for a zero or a miss. */
+.rb-none {
+  background: repeating-linear-gradient(45deg, transparent, transparent 3px, rgba(11, 11, 11, .07) 3px, rgba(11, 11, 11, .07) 6px);
+}
+/* Client proof on an industry page. Framed like a panel so it reads as evidence dropped into
+   the sales page rather than more of the page's own argument. Sits on the wash so it separates
+   from the white sections around it without competing with the closing CTA. */
+main > section.rb-proof {
+  border: var(--frame);
+  box-shadow: var(--pop-panel);
+  background: var(--wash);
+  padding: 1.4rem 1.25rem 1.5rem;
+  margin-bottom: 1.1rem;
+}
+main > section.rb-proof .rb-tiles { margin: 1rem 0 1.1rem; }
+main > section.rb-proof .rb-tile { background: var(--bg); }
+main > section.rb-proof .rb-num { font-size: 2rem; }
+
+/* Onboarding cards are starting points, not results. They read quieter than the board above so
+   a reader does not mistake a day-zero grid full of misses for a client we are failing. Same
+   frame, no hard shadow, paper-toned rather than white. */
+.rb-onboard { box-shadow: var(--pop-panel); background: var(--wash); }
+.rb-onboard .rb-tile { background: var(--bg); }
+.rb-legend { font-size: .82rem; margin: .6rem 0 0; color: #5a6a61; }
+.rb-key {
+  display: inline-block; min-width: 1.4rem; padding: .05rem .3rem;
+  text-align: center; border: 1px solid var(--ink); vertical-align: middle;
+}
+/* Screen-reader text: the grid's colors and glyphs carry meaning, so every cell also says what
+   it means in words. A dot and a hatch are not information to someone using a screen reader. */
+.rb-sr {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+}
+/* The per-term summary is collapsed by default now that the full grid carries the detail. It is
+   a convenience read, not the proof, so it should not push the grid off the screen. */
+.rb-summary { margin-top: 1.1rem; border-top: 2px solid var(--rule); }
+.rb-summary summary { cursor: pointer; font-weight: 600; padding: .6rem 0; }
+.rb-summary summary:hover { color: var(--primary); }
+.rb-note { font-size: .88rem; color: #5a6a61; margin: .2rem 0 .9rem; }
+
+@media (max-width: 47.99rem) {
+  .rb-tiles { grid-template-columns: repeat(auto-fit, minmax(7rem, 1fr)); gap: .5rem; }
+  .rb-num { font-size: 1.85rem; }
+  .rb-card .rb-num { font-size: 1.55rem; }
+  .rb-kw { font-size: .85rem; }
+  .rb-kw th, .rb-kw td { padding: .45rem .35rem; }
+}
+
+/* The board needs more than the 42rem reading column: five stat tiles and a three-column table
+   are cramped on the prose measure. Widened like .related and .faq are. */
+@media (min-width: 48rem) {
+  main > section:has(.rb-board),
+  main > section:has(.rb-topline) {
+    padding-left: max(1.25rem, calc((100% - 62rem) / 2));
+    padding-right: max(1.25rem, calc((100% - 62rem) / 2));
+  }
+}
+
+/* Before/after summary on board cards. The one line a comparing prospect actually wants. */
+.rb-card .rb-since { font-size: .92rem; margin: .3rem 0 .6rem; }
+.rb-card .rb-since-note { color: #5a6a61; font-style: italic; }
+
+/* Hub index lists (/locations/, /industries/). Added 2026-08-21 with the generated hubs.
+   These carry 108 and 70 links respectively, so a single column runs the page to 8000px
+   and wastes the whole right half of a desktop viewport. Columns keep the scan short.
+   column-count is used rather than grid because the lists are variable-length and the
+   browser balancing them beats any fixed row count we could pick. */
+.hublist {
+  column-width: 13rem;
+  column-gap: 1.75rem;
+  margin: .35rem 0 1.4rem;
+  padding-left: 1.1rem;
+}
+.hublist li {
+  break-inside: avoid;
+  margin: 0 0 .3rem;
+  line-height: 1.45;
+}
+main h3 + .hublist { margin-top: .5rem; }

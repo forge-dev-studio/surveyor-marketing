@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://surveyor.marketing/sitemap.xml
