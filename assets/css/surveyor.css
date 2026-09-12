@@ -46,9 +46,9 @@ section.sm-how .keys { margin-bottom: 1.5rem; }
 }
 .keys .sm-panel figcaption { flex: 1; background: #fff; }
 
-/* The territory band reuses the site's closing-panel ink treatment mid-page, so give back the
-   bottom margin the closing rule removes and let the pin-carry pose stand in its corner. */
-main > section.sm-band { margin-bottom: 1.5rem; padding-right: 2rem; }
+/* The territory band is the page's closing panel: ink, flush against the ink footer, with the
+   pin-carry pose standing in its corner. */
+main > section.sm-band { padding-right: 2rem; }
 section.sm-band p { max-width: 36rem; }
 @media (min-width: 62rem) { section.sm-band { padding-right: 20rem; } }
 
