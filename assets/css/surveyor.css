@@ -1,20 +1,56 @@
 /* surveyor.marketing additions on top of the shared site.css */
-/* The three duo panels need more than the --col (42rem) reading measure to seat two character
-   images per panel at a legible size, so this section alone widens to 64rem. .keys .vs-grid
-   (site.css) already sets grid-template-columns at the same 2-class specificity; qualifying
-   with .keys here (3 classes) wins the cascade unambiguously rather than relying on stylesheet
-   load order. */
+
+/* Section art on this page is a character cutout, not a 1200x670 scene, so the framed panel
+   gets the hero's cream halftone behind the figure and a portrait shape. */
+section.art .sec-art {
+  aspect-ratio: auto;
+  max-width: 21rem;
+  justify-self: center;
+  padding: 1rem 1rem 0;
+  background:
+    radial-gradient(circle, rgba(228, 0, 43, .09) 1.6px, transparent 1.6px) 0 0 / 17px 17px,
+    var(--wash);
+}
+@media (min-width: 64rem) { section.art .sec-art { align-self: center; } }
+
+/* The S&S numbers: four pop tiles, then the trend as bars. */
+.sm-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.1rem 0 1.4rem; }
+@media (max-width: 30rem) { .sm-stats { grid-template-columns: 1fr; } }
+.sm-stat { border: var(--frame); box-shadow: var(--pop); background: var(--accent); padding: .8rem .9rem .9rem; }
+.sm-stat b { display: block; font-family: var(--font-display); font-size: 2.6rem; line-height: 1; letter-spacing: .02em; color: var(--primary); text-shadow: 2px 2px 0 var(--ink); }
+.sm-stat span { display: block; margin-top: .4rem; font-size: .92rem; line-height: 1.35; }
+.sm-chart { margin: 0 0 1.2rem; border: var(--frame); background: #fff; padding: .9rem 1rem .8rem; }
+.sm-chart figcaption { font-family: var(--font-head); font-weight: 700; font-size: .95rem; margin-bottom: .6rem; }
+.sm-chart-nums, .sm-chart-bars, .sm-chart-labels { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: .6rem; text-align: center; }
+.sm-chart-nums b { font-family: var(--font-display); font-size: 1.5rem; letter-spacing: .03em; }
+.sm-chart-bars { height: 9rem; align-items: end; margin: .3rem 0; }
+.sm-chart-bars span { display: block; background: var(--primary); border: 2px solid var(--ink); box-shadow: 3px 3px 0 var(--ink); }
+.sm-chart-labels i { font-style: normal; font-size: .9rem; }
+
+/* How it works: three story panels need more than the 42rem reading measure, so this section
+   widens to 64rem while its own heading and paragraphs stay on the measure. */
 main > section.sm-how { padding: 2rem max(1.25rem, calc((100% - 64rem) / 2)); }
-.keys .vs-grid.sm-grid { grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); }
-/* Only the panel grid needs the wide column; the section's own text stays in the reading measure. */
-section.sm-how > h2, section.sm-how > p { max-width: 42rem; margin-left: auto; margin-right: auto; }
+section.sm-how > h2, section.sm-how > p { max-width: var(--col); margin-left: auto; margin-right: auto; }
 section.sm-how .keys { margin-bottom: 1.5rem; }
-.sm-panel .sm-duo { display: grid; grid-template-columns: 1fr 1fr; align-items: end; background: #fff; }
-.sm-panel .sm-duo img { width: 100%; height: auto; }
-.sm-trend { border-collapse: collapse; margin: 1rem 0; font-size: 1.05rem; }
-.sm-trend caption { text-align: left; font-weight: 700; margin-bottom: .3rem; }
-.sm-trend th, .sm-trend td { border: 2px solid var(--ink); padding: .5rem 1rem; text-align: center; }
-.sm-trend th { background: var(--wash); }
-.sm-talk { display: grid; grid-template-columns: minmax(0, 1fr) 18rem; gap: 1.5rem; align-items: end; }
-.sm-eric { width: 100%; height: auto; }
-@media (max-width: 720px) { .sm-talk { grid-template-columns: 1fr; } .sm-eric { max-width: 14rem; margin: 0 auto; } }
+.keys .vs-grid.sm-grid { grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: 1.5rem; }
+.keys .sm-panel { margin: 0; display: flex; flex-direction: column; }
+.keys .sm-panel img {
+  padding: 1rem 1rem 0;
+  box-sizing: border-box;
+  max-height: 22rem;
+  object-fit: contain;
+  object-position: bottom;
+  background:
+    radial-gradient(circle, rgba(228, 0, 43, .09) 1.6px, transparent 1.6px) 0 0 / 17px 17px,
+    var(--wash);
+}
+.keys .sm-panel figcaption { flex: 1; background: #fff; }
+
+/* The territory band reuses the site's closing-panel ink treatment mid-page, so give back the
+   bottom margin the closing rule removes and let the pin-carry pose stand in its corner. */
+main > section.sm-band { margin-bottom: 1.5rem; padding-right: 2rem; }
+section.sm-band p { max-width: 36rem; }
+@media (min-width: 62rem) { section.sm-band { padding-right: 20rem; } }
+
+/* The form keeps the section's reading measure; Eric stands in the art column beside it. */
+section.art .leadform { margin-top: 1rem; }
