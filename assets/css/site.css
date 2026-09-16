@@ -369,6 +369,54 @@ footer.ft {
   color: #f3efe6;
 }
 footer.ft p { margin: 0 0 .25rem; }
+
+/* Footer sitemap. Three columns on desktop, stacking to one on a phone. The column heading is a
+   <p>, not a heading element, on purpose: the city-page gates read h1/h2 text, and a run of
+   "Company" h2s on all 262 pages would sit in that signal for no reader benefit. Each column is
+   its own labelled <nav>, which gives screen readers the same grouping the headings would. */
+footer.ft .ftnav {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem 2rem;
+  margin: 0 0 1.75rem;
+  padding: 0 0 1.5rem;
+  border-bottom: 1px solid #3a352d;
+}
+/* Explicit ratios rather than auto-fit: the counties column runs two sub-columns of place names,
+   and under auto-fit its content widened its own track until Company wrapped to a second row
+   with a dead half-width beside it. */
+@media (min-width: 48rem) {
+  footer.ft .ftnav { grid-template-columns: 1.05fr 1.7fr .85fr; }
+}
+footer.ft .ftcol-h {
+  font-family: var(--font-display);
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  font-size: .92rem;
+  color: var(--accent);
+  margin: 0 0 .45rem;
+}
+footer.ft .ftcol ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  columns: 1;
+}
+/* The counties column is the long one. Two sub-columns everywhere: county names are short, and
+   stacked single-file they added fifteen rows of scrolling to every page on a phone. */
+footer.ft .ftcol:nth-child(2) ul { columns: 2; column-gap: 1.25rem; }
+
+footer.ft .ftcol li { margin: 0 0 .3rem; break-inside: avoid; }
+footer.ft .ftcol a {
+  color: #f3efe6;
+  text-decoration: none;
+  font-size: .85rem;
+  line-height: 1.35;
+}
+footer.ft .ftcol a:hover,
+footer.ft .ftcol a:focus { color: var(--accent); text-decoration: underline; }
+
+
 footer.ft .links {
   font-size: .85rem;
 }
