@@ -16,6 +16,17 @@
 <meta property="og:site_name" content="Surveyor.Marketing"><meta property="og:locale" content="en_US">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="stylesheet" href="/assets/css/site.css"><link rel="stylesheet" href="/assets/css/surveyor.css">
+<script>
+var ATTR_KEY = 'gsc_attr';
+function readAttr() {
+  try { var saved = sessionStorage.getItem(ATTR_KEY); if (saved) return JSON.parse(saved); } catch (e) {}
+  var q = new URLSearchParams(location.search);
+  var a = { utm_source: q.get('utm_source') || '', utm_medium: q.get('utm_medium') || '', utm_campaign: q.get('utm_campaign') || '', utm_term: q.get('utm_term') || '', utm_content: q.get('utm_content') || '', gclid: q.get('gclid') || '', fbclid: q.get('fbclid') || '', msclkid: q.get('msclkid') || '', referrer: document.referrer || '', landing: location.pathname };
+  try { sessionStorage.setItem(ATTR_KEY, JSON.stringify(a)); } catch (e) {}
+  return a;
+}
+readAttr();
+</script>
 
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"ProfessionalService","@id":"https://surveyor.marketing/#business","name":"Surveyor.Marketing","url":"https://surveyor.marketing/","description":"Leads for land surveyors, one client per territory","areaServed":[{"@type":"AdministrativeArea","name":"the Southeast"}],"address":{"@type":"PostalAddress","streetAddress":"246 N 5th Ave SW","addressLocality":"Rome","addressRegion":"GA","postalCode":"30165","addressCountry":"US"},"telephone":"+17629997528"},{"@type":"WebSite","@id":"https://surveyor.marketing/#website","url":"https://surveyor.marketing/","name":"Surveyor.Marketing","publisher":{"@id":"https://surveyor.marketing/#business"}}]}</script>
 </head><body>
@@ -66,6 +77,7 @@
   <div class="lf-row"><label for="tf-time">Best time to call</label><input id="tf-time" name="best_time" type="text" placeholder="Mornings, after four, any weekday"></div>
   <div class="lf-hp" aria-hidden="true"><label for="tf-company">Company</label><input id="tf-company" name="company" type="text" tabindex="-1" autocomplete="off"></div>
   <button class="cta" type="submit">Request a call</button>
+  <p class="smallprint lf-consent">By sending this, you agree we can contact you about your request by phone, email or text. Msg &amp; data rates may apply; reply STOP to opt out of texts. See our <a href="/privacy/">Privacy Policy</a>.</p>
   <p class="lf-status" role="status" aria-live="polite"></p>
 </form>
 </div></div><img class="sec-art" src="/assets/img/story/eric-09-cut.webp" alt="" aria-hidden="true" loading="lazy" decoding="async" width="1200" height="670"></section>
@@ -76,7 +88,7 @@
 
 
 </main>
-<footer class="ft"><p>Surveyor.Marketing · 246 N 5th Ave SW, Rome, GA 30165 · Serving the Southeast</p><p class="links"><a href="tel:+17629997528">(762) 999-PLAT</a> · <a href="https://www.georgiaseocompany.com/">Georgia SEO Company</a> · <a href="#talk">Talk to us</a></p><p class="legal">A Georgia SEO Company brand.</p></footer>
+<footer class="ft"><p>Surveyor.Marketing · 246 N 5th Ave SW, Rome, GA 30165 · <a class="tel" href="tel:+17629997528">(762) 999-7528</a> · Serving the Southeast</p><p class="links"><a href="tel:+17629997528">(762) 999-PLAT</a> · <a href="https://www.georgiaseocompany.com/">Georgia SEO Company</a> · <a href="#talk">Talk to us</a> · <a href="/privacy/">Privacy</a></p><p class="legal">A Georgia SEO Company brand.</p></footer>
 <div class="stickycta" role="complementary" aria-label="Call or talk to us">
 <a class="sticky-tel" href="tel:+17629997528"><span aria-hidden="true">&#9742;</span> (762) 999-PLAT</a>
 <a class="sticky-cta" href="#talk">Talk to us</a>
@@ -107,39 +119,9 @@
 })();
 </script><script>
 (function () {
-  var PHONE = '(762) 999-RANK';
-
-  // ATTRIBUTION. Added 2026-08-21 because leads reached GHL with no way to tell paid from
-  // organic: the form sent five fields and nothing else, so every contact looked identical
-  // whatever brought it in.
-  //
-  // FIRST TOUCH WINS, and it is stored per session. Somebody lands on a city page from an ad,
-  // reads for a while, then submits from /contact/. By then location.search is empty and
-  // document.referrer is our own site, so reading either at submit time would file that ad
-  // lead as Direct. Stashing the landing values on arrival is the only way the ad still gets
-  // credit three clicks later.
-  var ATTR_KEY = 'gsc_attr';
-  function readAttr() {
-    try {
-      var saved = sessionStorage.getItem(ATTR_KEY);
-      if (saved) return JSON.parse(saved);
-    } catch (e) { /* private mode, fall through and just use this pageview */ }
-    var q = new URLSearchParams(location.search);
-    var a = {
-      utm_source: q.get('utm_source') || '',
-      utm_medium: q.get('utm_medium') || '',
-      utm_campaign: q.get('utm_campaign') || '',
-      utm_term: q.get('utm_term') || '',
-      utm_content: q.get('utm_content') || '',
-      gclid: q.get('gclid') || '',
-      fbclid: q.get('fbclid') || '',
-      msclkid: q.get('msclkid') || '',
-      referrer: document.referrer || '',
-      landing: location.pathname
-    };
-    try { sessionStorage.setItem(ATTR_KEY, JSON.stringify(a)); } catch (e) {}
-    return a;
-  }
+  // One literal, not an href built by concatenation: QA check 8 scans every href= in the page
+  // and a split attribute reads to it as an empty, non-root-relative link.
+  var PHONE_LINK = '<a href="tel:+17629997528">(762) 999-PLAT</a>';
 
   // NOT ALL CLICK IDS MEAN PAID, and treating them alike was a real bug here until
   // 2026-08-21. gclid and msclkid are set by Google Ads and Microsoft Ads, so their presence
@@ -199,7 +181,7 @@
     if (label === 'Direct') return 'direct';
     return 'other';
   }
-  var ATTR = readAttr();
+  var ATTR = typeof readAttr === 'function' ? readAttr() : {};
   // Phone accepts digits and phone punctuation only. Letters never appear, even mid-string
   // paste: anything else is stripped the moment it lands in the field.
   document.querySelectorAll('form.leadform-form [name=phone]').forEach(function (input) {
@@ -277,8 +259,8 @@
         // Never a green checkmark for a lead that reached nowhere. Give a tappable number
         // instead of a dead end, so the visitor's intent survives the failure.
         status.className = 'lf-status is-bad';
-        status.innerHTML = 'That did not send. Call <a href="tel:+17629997265">' + PHONE +
-          '</a> and we will take it down by phone.';
+        status.innerHTML = 'That did not send. Call ' + PHONE_LINK +
+          ' and we will take it down by phone.';
         button.textContent = original;
         button.disabled = false;
       });

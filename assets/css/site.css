@@ -277,6 +277,8 @@ section.hero .lead {
 /* The contact page hero deliberately carries no CTA button. Without this its lead margin plus
    the hero's own bottom padding left ~90px of empty wash under the last line. */
 section.hero .lead:last-child { margin-bottom: 0; }
+/* Blog post byline (2026-09-22): .smallprint type, sitting between the H1 and the lead. */
+section.hero .byline { margin: 0 0 .75rem; }
 /* The CTA is a yellow action bubble: comic frame, hard shadow, display lettering. */
 .cta {
   display: inline-block;
@@ -498,6 +500,7 @@ section.hero { position: relative; }
 .mascot-closing { display: none; }
 @media (min-width: 62rem) {
   section.hero:has(.mascot-hero) h1,
+  section.hero:has(.mascot-hero) .byline,
   section.hero:has(.mascot-hero) .lead { max-width: 30rem; }
   .mascot-hero {
     display: block;
