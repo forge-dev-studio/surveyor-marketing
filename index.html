@@ -75,7 +75,7 @@ readAttr();
   <div class="lf-row"><label for="tf-phone">Phone <span class="req" aria-hidden="true">*</span></label><input id="tf-phone" name="phone" type="tel" autocomplete="tel" inputmode="numeric" pattern="[0-9()+\-. ]*" required></div>
   <div class="lf-row"><label for="tf-email">Email <span class="req" aria-hidden="true">*</span></label><input id="tf-email" name="email" type="email" autocomplete="email" required></div>
   <div class="lf-row"><label for="tf-time">Best time to call</label><input id="tf-time" name="best_time" type="text" placeholder="Mornings, after four, any weekday"></div>
-  <div class="lf-hp" aria-hidden="true"><label for="tf-company">Company</label><input id="tf-company" name="company" type="text" tabindex="-1" autocomplete="off"></div>
+  <div class="lf-hp" aria-hidden="true"><label for="tf-leave-blank">Leave this blank</label><input id="tf-leave-blank" name="leave_blank" type="text" tabindex="-1" autocomplete="off"></div>
   <button class="cta" type="submit">Request a call</button>
   <p class="smallprint lf-consent">By sending this, you agree we can contact you about your request by phone, email or text. Msg &amp; data rates may apply; reply STOP to opt out of texts. See our <a href="/privacy/">Privacy Policy</a>.</p>
   <p class="lf-status" role="status" aria-live="polite"></p>
@@ -206,6 +206,11 @@ readAttr();
       }
       var data = {};
       new FormData(form).forEach(function (v, k) { data[k] = v; });
+      // The bot trap. A filled one still sends: its value rides as company, which the worker
+      // reads to mark the lead possible spam, and it is never counted as a lead below.
+      var trapped = String(data.leave_blank || '').trim();
+      delete data.leave_blank;
+      data.company = trapped;
       // Attribution rides along with every submission. source is what GHL shows in its
       // Source column, channel becomes a tag, and the rest is kept verbatim so a campaign
       // can be traced later without re-deriving it from a label.
@@ -235,14 +240,19 @@ readAttr();
         // to tell which of 257 pages actually produces work. The channel and page ride along
         // so 'which page converts' and 'which channel converts' are both answerable.
         // Mark generate_lead as a key event in GA4 or it stays a plain event.
+        // A filled trap was delivered labeled possible spam; it must never count as a lead.
         if (typeof gtag === 'function') {
-          gtag('event', 'generate_lead', {
-            lead_channel: data.channel || 'unknown',
-            lead_source: data.source || 'unknown',
-            page_path: location.pathname,
-            landing_page: ATTR.landing || '',
-            campaign: ATTR.utm_campaign || ''
-          });
+          if (trapped) {
+            gtag('event', 'form_possible_spam', { reason: 'honeypot', page_path: location.pathname });
+          } else {
+            gtag('event', 'generate_lead', {
+              lead_channel: data.channel || 'unknown',
+              lead_source: data.source || 'unknown',
+              page_path: location.pathname,
+              landing_page: ATTR.landing || '',
+              campaign: ATTR.utm_campaign || ''
+            });
+          }
         }
         form.querySelector('.lf-row').scrollIntoView({ block: 'nearest' });
         status.className = 'lf-status is-good';
