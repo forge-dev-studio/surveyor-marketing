@@ -908,6 +908,54 @@ thead th {
 .lf-status.is-good { color: #1c7a3d; }
 .lf-status.is-bad { color: var(--primary); }
 
+/* The audit form inside the ink closing band (2026-10-07: every page but home, /contact/, /seo-audit/
+   and /privacy/). The panel stays cream, so it resets what the band sets for its own copy: ink text,
+   the link color, the small print, and the button's white shadow, which vanishes on cream. The panel's
+   ink shadow would vanish on the ink band, so it takes the band's yellow. 34rem keeps it clear of the
+   closing mascot, which stands in the band's right margin from 62rem and reaches into the 42rem column
+   on screens narrower than 72rem. */
+section.closing .leadform { color: var(--ink); box-shadow: 5px 5px 0 var(--accent); max-width: 34rem; }
+section.closing .leadform a:not(.cta) { color: var(--primary); }
+section.closing .leadform .smallprint { color: #5a5348; }
+section.closing .leadform .cta { box-shadow: var(--pop); }
+section.closing .leadform .cta:hover, section.closing .leadform .cta:focus { box-shadow: 7px 7px 0 var(--ink); }
+section.closing .leadform .cta:active { box-shadow: 2px 2px 0 var(--ink); }
+
+/* The home page hero carries the form (2026-10-07) in a right-hand column from 62rem, where the
+   mascot stood; narrower screens stack it under the copy. The hero widens from the 42rem reading
+   column to 62rem so the copy keeps a readable measure beside a 25rem form. The form is much taller
+   than the h1 and lead, so the mascot moves from the hero's right edge to the foot of the copy column,
+   standing on the hero's bottom rule: without him that column is a tall empty patch beside the form.
+   The grid keys off the form with :has(); the mascot rules key off the form sitting before him
+   (render.mjs emits the form first), which every browser understands. A browser without :has() gets
+   the stacked layout, and from 62rem the mascot is hidden there when it can say so (@supports
+   selector()) and otherwise stands under the form, never on it. Below 62rem he is hidden everywhere. */
+@media (min-width: 62rem) {
+  section.hero:has(> .leadform) {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(20rem, 25rem);
+    grid-template-rows: auto auto 1fr;
+    column-gap: 2.5rem;
+    align-items: start;
+    padding-left: max(1.25rem, calc((100% - 62rem) / 2));
+    padding-right: max(1.25rem, calc((100% - 62rem) / 2));
+  }
+  section.hero:has(> .leadform) > :not(.leadform) { grid-column: 1; }
+  section.hero:has(> .leadform) > .leadform { grid-column: 2; grid-row: 1 / -1; margin: 0; }
+  section.hero > .leadform ~ .mascot-hero {
+    position: static;
+    grid-row: 3;
+    align-self: end;
+    justify-self: center;
+    height: 300px;
+    max-height: none;
+    margin-bottom: -4rem;
+  }
+  @supports not selector(:has(a)) {
+    section.hero > .leadform ~ .mascot-hero { display: none; }
+  }
+}
+
 /* ------------------------------------------------------------------ mobile sticky CTA
    Phone and audit button pinned to the bottom on phones only. Desktop already has both in
    the header, where they do not cost scroll space. The body gets bottom padding to match so
@@ -947,6 +995,8 @@ thead th {
   .stickycta a:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
   body { padding-bottom: 4.6rem; }
 }
+/* Hidden while this page's audit form is on screen (stickyHideScript, lib/leadform.mjs). */
+.stickycta.is-hidden { display: none; }
 
 /* The Matchups grid on /story/: two-up on desktop, single column under 48rem. */
 .keys .vs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(21rem, 1fr)); gap: 1.2rem; }

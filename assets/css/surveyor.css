@@ -27,10 +27,11 @@ section.art .sec-art {
 .sm-chart-bars span { display: block; background: var(--primary); border: 2px solid var(--ink); box-shadow: 3px 3px 0 var(--ink); }
 .sm-chart-labels i { font-style: normal; font-size: .9rem; }
 
-/* How it works: three story panels need more than the 42rem reading measure, so this section
-   widens to 64rem while its own heading and paragraphs stay on the measure. */
+/* The Territory Lock section (class sm-how, kept as the CSS hook from when it was "How it works"):
+   three story panels need more than the 42rem reading measure, so this section widens to 64rem
+   while its own heading and paragraphs stay on the measure. */
 main > section.sm-how { padding: 2rem max(1.25rem, calc((100% - 64rem) / 2)); }
-section.sm-how > h2, section.sm-how > p { max-width: var(--col); margin-left: auto; margin-right: auto; }
+section.sm-how > h2, section.sm-how > p, section.sm-how > .sm-offer { max-width: var(--col); margin-left: auto; margin-right: auto; }
 section.sm-how .keys { margin-bottom: 1.5rem; }
 .keys .vs-grid.sm-grid { grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: 1.5rem; }
 .keys .sm-panel { margin: 0; display: flex; flex-direction: column; }
@@ -54,3 +55,11 @@ section.sm-band p { max-width: 36rem; }
 
 /* The form keeps the section's reading measure; Eric stands in the art column beside it. */
 section.art .leadform { margin-top: 1rem; }
+
+/* The Territory Lock offer block (2026-10-13): the one place prices appear on this site. */
+.sm-offer { border: var(--frame); box-shadow: var(--pop); background: #fff; padding: 1rem 1.1rem 1.2rem; margin-top: 1.4rem; }
+.sm-offer h3 { font-family: var(--font-head); font-size: 1.15rem; margin: 1rem 0 .4rem; }
+.sm-offer ul { margin: 0 0 .6rem 1.2rem; padding: 0; }
+.sm-offer li { margin: .25rem 0; }
+.sm-offer .smallprint { font-size: .85rem; opacity: .85; }
+.sm-offer .cta { margin-top: .8rem; display: inline-block; }
