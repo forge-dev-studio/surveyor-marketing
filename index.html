@@ -116,7 +116,7 @@ readAttr();
 <script>
 (function () {
   var KEEP = 90 * 24 * 60 * 60 * 1000;
-  var MORE = 60, BASE = 50;
+  var MORE = 100, BASE = 50;
   var REFERRERS = {};
   var LETTERS = [];
   function slug(s) {
@@ -159,7 +159,7 @@ readAttr();
   var who = codes.ref && Object.prototype.hasOwnProperty.call(REFERRERS, codes.ref) ? REFERRERS[codes.ref] : null;
   if (slot && who) {
     slot.textContent = (who.name ? who.name + ' at ' + who.firm + ' sent you.' : 'A surveyor we work with sent you.') +
-      ' Because they did, your advance buys ' + MORE + ' leads instead of ' + BASE + ', and you keep the lower rate for as long as you stay.';
+      ' Because they introduced you, your advance buys ' + MORE + ' leads instead of ' + BASE + ', and you keep the lower rate for as long as you stay.';
     slot.hidden = false;
   }
 })();
