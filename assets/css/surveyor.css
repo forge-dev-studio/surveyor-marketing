@@ -63,6 +63,8 @@ section.art .leadform { margin-top: 1rem; }
 .sm-offer li { margin: .25rem 0; }
 .sm-offer .smallprint { font-size: .85rem; opacity: .85; }
 .sm-offer .cta { margin-top: .8rem; display: inline-block; }
+/* /refer/: the small print under its price box clears the box's drop shadow. */
+.sm-offer + .smallprint { margin-top: 1.4rem; }
 
 /* The referral banner (plan 2026-10-14): shown only when a personal link's code is in the registry. */
 .sm-sent { background: var(--accent); border: var(--frame); box-shadow: var(--pop); padding: .7rem .9rem; font-weight: 700; margin: 0 0 1rem; }
