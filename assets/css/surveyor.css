@@ -80,3 +80,7 @@ section.art .leadform { margin-top: 1rem; }
    two groups read as two. The button's hard shadow also needs air above the consent line, on the home call form too. */
 .lf-set:not(:last-of-type) { margin-bottom: 1.3rem; background: linear-gradient(var(--ink), var(--ink)) bottom left / 100% 2px no-repeat; }
 .leadform .lf-consent { margin-top: 1.1rem; }
+/* Bangers draws its 1 with a long flag, so 178 reads as 778. 0-9 come from a digits-only cut of Bangers whose 1 has a
+   foot (tools/make-sm-digits.py); letters stay plain Bangers. */
+@font-face { font-family: 'SM Digits'; src: url(/assets/fonts/sm-digits.woff2) format('woff2'); font-weight: 100 900; font-display: swap; unicode-range: U+0030-0039; }
+:root { --font-display: 'SM Digits', 'Bangers', 'DM Sans', system-ui, Arial, sans-serif; }
