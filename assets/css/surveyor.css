@@ -84,3 +84,6 @@ section.art .leadform { margin-top: 1rem; }
    foot (tools/make-sm-digits.py); letters stay plain Bangers. */
 @font-face { font-family: 'SM Digits'; src: url(/assets/fonts/sm-digits.woff2) format('woff2'); font-weight: 100 900; font-display: swap; unicode-range: U+0030-0039; }
 :root { --font-display: 'SM Digits', 'Bangers', 'DM Sans', system-ui, Arial, sans-serif; }
+/* The sticky bar's two buttons fit one line at 390px; on narrower phones their text scales down instead of wrapping
+   (a two-line bar outgrows the body's bottom padding and can cover the footer's last line). */
+.stickycta a.sticky-cta, .stickycta a.sticky-tel { white-space: nowrap; font-size: min(.95rem, calc(4.5vw - 2.6px)); }
