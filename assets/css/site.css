@@ -992,6 +992,8 @@ section.closing .leadform .cta:active { box-shadow: 2px 2px 0 var(--ink); }
   }
   .sticky-tel { background: #fff; color: var(--ink); }
   .sticky-cta { background: var(--accent); color: var(--ink); }
+  /* A page without the audit button (p.noStickyCta) gives the phone button the whole bar. */
+  .stickycta a:only-child { grid-column: 1 / -1; }
   .stickycta a:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
   body { padding-bottom: 4.6rem; }
 }
@@ -1289,3 +1291,57 @@ main > section.rb-proof .rb-num { font-size: 2rem; }
   line-height: 1.45;
 }
 main h3 + .hublist { margin-top: .5rem; }
+
+/* ------------------------------------------------------------------ /call/ booking calendar
+   GHL's booking widget in an iframe (content/core.mjs, /call/). The widget draws its own white
+   card, so the section only gives it room: a smaller gutter on a phone, where the calendar needs
+   every pixel of width, and a column wider than the 42rem prose measure from 48rem. The widget
+   decides its layout from the frame's own width (measured 2026-10-24: stacked at 716px, day grid
+   and list of times side by side at 768px), so a frame near 800px gets the roomier layout.
+   The frame wrapper does three jobs. It is the comic frame on a wide screen (on a phone the panel
+   already is one). It paints the halftone wash and a short "Loading the calendar" line while
+   form_embed.js holds the iframe invisible, and the iframe's own white background covers both the
+   moment the widget answers. And it reserves a height, so the page does not collapse around an
+   empty box while the widget loads; form_embed.js then sets the real height, which wins whenever
+   it is taller. */
+section.callcal { padding-top: 1.5rem; padding-bottom: 1.5rem; }
+@media (max-width: 47.99rem) {
+  section.callcal { padding-left: .6rem; padding-right: .6rem; }
+  .callcal-alt { padding: 0 .65rem; }
+}
+@media (min-width: 48rem) {
+  section.callcal {
+    padding-left: max(1.25rem, calc((100% - 52rem) / 2));
+    padding-right: max(1.25rem, calc((100% - 52rem) / 2));
+  }
+  .callcal-frame { border: var(--frame); box-shadow: var(--pop-panel); }
+}
+.callcal-frame {
+  position: relative;
+  min-height: 34rem;
+  background:
+    radial-gradient(circle, rgba(228, 0, 43, .09) 1.6px, transparent 1.6px) 0 0 / 17px 17px,
+    var(--wash);
+}
+.callcal-frame::before {
+  content: 'Loading the calendar';
+  content: 'Loading the calendar' / '';
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  letter-spacing: .04em;
+  color: rgba(11, 11, 11, .55);
+}
+.callcal-frame iframe {
+  position: relative;
+  display: block;
+  width: 100%;
+  min-height: 34rem;
+  border: 0;
+  background: #fff;
+}
+.callcal-alt { margin: 1.1rem 0 0; font-size: .95rem; }
