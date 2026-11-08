@@ -329,7 +329,7 @@ readAttr();
         // The worker answers 503 when the lead reached nowhere. Never show success for it.
         if (!r.ok) throw new Error('not stored');
         return r.json();
-      }).then(function () {
+      }).then(function (res) {
         // GA4 conversion. Fires ONLY after the worker confirms the lead was stored, so the
         // count in GA4 matches the count in GHL rather than counting attempts.
         //
@@ -337,10 +337,14 @@ readAttr();
         // to tell which of 257 pages actually produces work. The channel and page ride along
         // so 'which page converts' and 'which channel converts' are both answerable.
         // Mark generate_lead as a key event in GA4 or it stays a plain event.
-        // A filled trap was delivered labeled possible spam; it must never count as a lead.
+        // A filled trap was delivered labeled possible spam; it must never count as a lead. Nor
+        // must a sender on forge-lead-worker's block list (spam reports, 2026-11-07): the worker
+        // answers a reported or dropped sender with possibleSpam: true. Only the boolean counts.
+        // The visitor sees the same thanks either way, so a sender is never told it was caught.
+        var spam = Boolean(trapped) || Boolean(res && res.possibleSpam === true);
         if (typeof gtag === 'function') {
-          if (trapped) {
-            gtag('event', 'form_possible_spam', { reason: 'honeypot', page_path: location.pathname, form_location: loc });
+          if (spam) {
+            gtag('event', 'form_possible_spam', { reason: trapped ? 'honeypot' : 'block_list', page_path: location.pathname, form_location: loc });
           } else {
             gtag('event', 'generate_lead', {
               lead_channel: data.channel || 'unknown',

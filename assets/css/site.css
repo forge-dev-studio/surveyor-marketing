@@ -1019,6 +1019,32 @@ section.art .sec-art {
   background: #fff;
   margin: 1.1rem 0 0.4rem;
 }
+/* Real photos (SEO-FIXES T8, 2026-10-29). Unlike the art these are content and carry a real
+   alt. They wear the art panels' frame and offset shadow so they read as part of the page.
+   Both float at the top of their text and the text wraps them, so neither needs a layout of
+   its own: the About hero photo sits beside the H1, a section photo beside the first lines. */
+.hero-photo,
+.sec-photo {
+  display: block;
+  float: right;
+  height: auto;
+  border: var(--frame);
+  box-shadow: var(--pop);
+  background: #fff;
+}
+section.hero:has(> .hero-photo),
+section:has(> .sec-photo),
+.sec-body:has(> .sec-photo) { display: flow-root; }
+.hero-photo { width: 7.5rem; margin: 0 0 .75rem 1rem; }
+.sec-photo { width: 42%; max-width: 15rem; margin: .3rem 0 1rem 1.25rem; }
+/* A photo whose slide has to stay readable (2026-10-30) runs the full width of the copy. */
+.sec-photo.sec-photo-wide { float: none; width: 100%; max-width: none; margin: .5rem 0 1.25rem; }
+@media (min-width: 48rem) {
+  .hero-photo { width: 12rem; margin-left: 2rem; }
+}
+@media (min-width: 62rem) {
+  .hero-photo { width: 16rem; margin-right: 1rem; }
+}
 @media (min-width: 64rem) {
   /* Sections are normally padded so their content sits on the --col (42rem) reading measure,
      which leaves ~24rem of dead white inside the 72rem shell. Art sections spend exactly that
@@ -1345,3 +1371,16 @@ section.callcal { padding-top: 1.5rem; padding-bottom: 1.5rem; }
   background: #fff;
 }
 .callcal-alt { margin: 1.1rem 0 0; font-size: .95rem; }
+
+/* JunkIQ terms checkbox and popup (/junk-removal-calculator/). */
+.terms-line { display: flex; align-items: center; gap: .65rem; margin: 1.1rem 0 .75rem; }
+.terms-box { width: 1.6rem; height: 1.6rem; flex: none; margin: 0; accent-color: var(--primary); cursor: pointer; }
+.terms-open { font-weight: 700; }
+.terms-nudge { margin: 0 0 .75rem; color: var(--primary); font-weight: 700; }
+.terms-cta.is-locked { opacity: .55; }
+.terms-dialog { width: calc(100% - 2rem); max-width: 36rem; max-height: 85vh; padding: 1.5rem 1.5rem 0; overflow-y: auto; border: var(--frame); box-shadow: var(--pop); background: #fff; color: var(--ink); }
+.terms-dialog::backdrop { background: rgba(11, 11, 11, .65); }
+.terms-dialog p { font-size: .95rem; }
+.terms-dialog .terms-title { margin: 0 0 .85rem; font-family: var(--font-display); font-size: 1.6rem; outline: none; }
+.terms-actions { position: sticky; bottom: 0; margin: 1.1rem 0 0; padding: .75rem 0 1.25rem; background: #fff; }
+.terms-close { cursor: pointer; font-size: 1rem; }
