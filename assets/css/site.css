@@ -1384,3 +1384,60 @@ section.callcal { padding-top: 1.5rem; padding-bottom: 1.5rem; }
 .terms-dialog .terms-title { margin: 0 0 .85rem; font-family: var(--font-display); font-size: 1.6rem; outline: none; }
 .terms-actions { position: sticky; bottom: 0; margin: 1.1rem 0 0; padding: .75rem 0 1.25rem; background: #fff; }
 .terms-close { cursor: pointer; font-size: 1rem; }
+
+/* ------------------------------------------------------------------ homepage proof (2026-11-08)
+   Eric: proof beside the audit form, the review quotes as a carousel. The rating line sits above the hero h1, level
+   with the form's heading, so a 1280x515 window still shows it; the band under the hero holds the Google review carousel (lib/reviews.mjs, hidden until the reviews
+   worker answers) and the results board's strongest client. The band keeps the reading column on its own and widens
+   to the hero's 62rem only once the carousel shows, so the two sit side by side the way the copy sits beside the form. */
+.hero-rating { margin: 0 0 .65rem; font-family: var(--font-head); font-weight: 700; font-size: 1.05rem; }
+.hero-rating a { color: var(--ink); text-decoration: none; }
+.hero-rating a:hover, .hero-rating a:focus-visible { text-decoration: underline; }
+.hr-stars, .rev-stars { color: var(--accent); -webkit-text-stroke: 1px var(--ink); letter-spacing: .1em; }
+.hr-stars { font-size: 1.2rem; margin-right: .15rem; }
+@media (min-width: 62rem) {
+  /* The rating line takes the first row in the copy column, so the mascot moves down to the fourth. */
+  section.hero:has(> .leadform):has(> .hero-rating) { grid-template-rows: auto auto auto 1fr; }
+  section.hero:has(> .hero-rating) > .leadform ~ .mascot-hero { grid-row: 4; }
+}
+/* minmax(0, 1fr), not the implicit auto column: the carousel's cards are 100% wide flex items, and an auto column
+   sized them to their one-line text, which pushed a phone screen sideways. */
+.proofband { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.75rem; }
+@media (min-width: 48rem) {
+  .proofband:has(> .pb-reviews:not([hidden])) {
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    align-items: start;
+    padding-left: max(1.25rem, calc((100% - 62rem) / 2));
+    padding-right: max(1.25rem, calc((100% - 62rem) / 2));
+  }
+}
+.pb-kicker { margin: 0 0 .7rem; font-family: var(--font-display); font-size: 1.35rem; letter-spacing: .04em; line-height: 1.1; color: var(--primary); }
+.rev-track {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  border: var(--frame);
+  box-shadow: var(--pop-panel);
+  background: var(--wash);
+}
+.rev-track::-webkit-scrollbar { display: none; }
+.rev-track:focus-visible { outline: 3px solid var(--primary); outline-offset: 3px; }
+/* min-width: 0 and overflow-wrap keep a review with a long unbroken string (a URL) to the track's width: a wider
+   card would clip and throw off the script's one-card-per-step arithmetic. */
+.rev-card { flex: 0 0 100%; min-width: 0; margin: 0; padding: 1.1rem 1.25rem 1rem; scroll-snap-align: start; }
+.rev-card .rev-stars { margin: 0 0 .35rem; font-size: 1.15rem; }
+/* A long review is cut at seven lines so the band doesn't jump in height as the quotes turn; the full text is
+   still in the page for screen readers, and every review is a click away on the profile. */
+.rev-card blockquote { margin: 0 0 .7rem; font-size: 1.02rem; overflow-wrap: anywhere; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 7; overflow: hidden; }
+.rev-card figcaption { font-size: .9rem; color: #5a5348; }
+.rev-card .who, .rev-card .who a { font-weight: 600; color: var(--ink); overflow-wrap: anywhere; }
+.rev-ctrl { display: flex; gap: .5rem; margin: .8rem 0 .5rem; }
+.rev-ctrl[hidden] { display: none; }
+.rev-btn { min-width: 2.75rem; min-height: 2.75rem; padding: .2rem .8rem; border: 2px solid var(--ink); background: var(--bg); color: var(--ink); font-family: var(--font-head); font-weight: 700; font-size: 1rem; cursor: pointer; }
+.rev-btn:not(.rev-pause) { font-size: 1.45rem; line-height: 1; }
+.rev-btn:hover { background: var(--accent); }
+.rev-btn:focus-visible { outline: 3px solid var(--primary); outline-offset: 2px; }
+.rev-source { margin: 0; font-size: .9rem; }
+.pb-result .rb-tiles { margin: .2rem 0 .7rem; }
+.pb-more { margin: .6rem 0 0; font-size: .9rem; }
